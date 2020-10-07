@@ -105,39 +105,52 @@ public class TicTacToeGame {
 
 	// computer play
 	public static boolean computerPlay(char[] board, char computerLetter, char playerLetter) {
-		int index = 1;
+		int index = 0;
 		index = winningIndex(board, computerLetter);
 		if (index != 0) {
 			board[index] = computerLetter;
 			return true;
 		}
 		int blockIndex = toBlockOponent(board, playerLetter);
-		if (blockIndex == 0) {
-			index=chooseCorner(board);
-			while (index==0 || !isEmpty(board, index)) {
-				index = (int) (Math.random() * 9) + 1;
-			}
-		} else
-			index = blockIndex;
+		if (blockIndex != 0) {
+			board[blockIndex] = computerLetter;
+			return false;
+		}
+		index = chooseCorner(board);
+		System.out.println("corner : " + index);
+		if (index == 0) {
+			index = centerOrSides(board);
+		}
 		board[index] = computerLetter;
 		showBoard(board);
 		return false;
 	}
-	
-	//ability to choose one of the corners
-	public static int chooseCorner(char[] board)
-	{
-		int[] corners= {1,3,7,9};
-		for(int index=0;index<=3;index++)
-		if(isEmpty(board,corners[index]))
-			return index;
+
+	// ability to choose one of the corners
+	public static int chooseCorner(char[] board) {
+		int[] corners = { 1, 3, 7, 9 };
+		for (int index = 0; index <= 3; index++)
+			if (isEmpty(board, corners[index]))
+				return corners[index];
 		return 0;
+	}
+
+	// ability to choose center or sides
+	public static int centerOrSides(char[] board) {
+		if (isEmpty(board, 5))
+			return 5;
+		int[] sides = { 2, 4, 6, 8 };
+		for (int index = 0; index <= 3; index++)
+			if (isEmpty(board, sides[index]))
+				return index;
+		return 0;
+
 	}
 
 	// computer play to block opponent
 	public static int toBlockOponent(char[] board, char playerLetter) {
 		int index = 0;
-		index=winningIndex(board, playerLetter);
+		index = winningIndex(board, playerLetter);
 		return index;
 	}
 
