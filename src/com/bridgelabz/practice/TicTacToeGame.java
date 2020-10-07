@@ -89,7 +89,7 @@ public class TicTacToeGame {
 	}
 
 	// computer play
-	public static boolean computerPlay(char[] board, char computerLetter) {
+	public static boolean computerPlay(char[] board, char computerLetter, char playerLetter) {
 		int index = 1;
 		for (index = 1; index <= 9; index++) {
 			if (isEmpty(board, index)) {
@@ -100,13 +100,32 @@ public class TicTacToeGame {
 					board[index] = ' ';
 			}
 		}
-		index = (int) (Math.random() * 9) + 1;
-		while (!isEmpty(board, index)) {
+		int blockIndex = toBlockOponent(board, playerLetter);
+		if (blockIndex == 0) {
 			index = (int) (Math.random() * 9) + 1;
-		}
+			while (!isEmpty(board, index)) {
+				index = (int) (Math.random() * 9) + 1;
+			}
+		}else index=blockIndex;
 		board[index] = computerLetter;
 		showBoard(board);
 		return false;
+	}
+
+	// computer play to block oponent
+	public static int toBlockOponent(char[] board, char playerLetter) {
+		int index = 1;
+		for (index = 1; index <= 9; index++) {
+			if (isEmpty(board, index)) {
+				board[index] = playerLetter;
+				if (isWinner(board, playerLetter)) {
+					board[index] = ' ';
+					return index;
+				}
+				board[index] = ' ';
+			}
+		}
+		return 0;
 	}
 
 	// to check for a tie
@@ -137,7 +156,7 @@ public class TicTacToeGame {
 			System.out.println("player is the winner");
 			return;
 		}
-		if (computerPlay(board, computerLetter)) {
+		if (computerPlay(board, computerLetter, playerLetter)) {
 			System.out.println("computer is the winner");
 			return;
 		}
