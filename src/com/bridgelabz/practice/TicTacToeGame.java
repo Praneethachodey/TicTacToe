@@ -46,13 +46,18 @@ public class TicTacToeGame {
 			System.out.println("enter correct position between 1 and 9");
 			position = userInput.nextInt();
 		}
-		while (board[position] != ' ') {
+		while (!isEmpty(board, position)) {
 			System.out.println("the position is already occupied");
 			position = userInput.nextInt();
 		}
 		board[position] = playerLetter;
 		userInput.close();
 		return board;
+	}
+
+	// to check if the position is empty
+	public static boolean isEmpty(char[] board, int index) {
+		return board[index] == ' ';
 	}
 
 	// to check who plays first, computer or user
@@ -67,20 +72,40 @@ public class TicTacToeGame {
 	}
 
 	// to check for winner
-	public static boolean isWinner(char[] board) {
+	public static boolean isWinner(char[] board, char symbol) {
 		for (int row = 1; row <= 6; row = row + 3) {
-			if (board[row] != ' ' && board[row] == board[row + 1] && board[row] == board[row + 2])
+			if (board[row] == symbol && board[row] == board[row + 1] && board[row] == board[row + 2])
 				return true;
 		}
 		for (int column = 1; column <= 3; column++) {
-			if (board[column] != ' ' && board[column] == board[column + 3] && board[column] == board[column + 6])
+			if (board[column] == symbol && board[column] == board[column + 3] && board[column] == board[column + 6])
 				return true;
 		}
+		if (board[1] == symbol && board[1] == board[5] && board[1] == board[9])
+			return true;
+		if (board[3] == symbol && board[3] == board[5] && board[3] == board[7])
+			return true;
+		return false;
+	}
 
-		if (board[1] != ' ' && board[1] == board[5] && board[1] == board[9])
-			return true;
-		if (board[3] != ' ' && board[3] == board[5] && board[3] == board[7])
-			return true;
+	// computer play
+	public static boolean computerPlay(char[] board, char computerLetter) {
+		int index = 1;
+		for (index = 1; index <= 9; index++) {
+			if (isEmpty(board, index)) {
+				board[index] = computerLetter;
+				if (isWinner(board, computerLetter))
+					return true;
+				else
+					board[index] = ' ';
+			}
+		}
+		index = (int) (Math.random() * 9) + 1;
+		while (!isEmpty(board, index)) {
+			index = (int) (Math.random() * 9) + 1;
+		}
+		board[index] = computerLetter;
+		showBoard(board);
 		return false;
 	}
 
@@ -108,8 +133,14 @@ public class TicTacToeGame {
 		System.out.println(playFirst + " plays first");
 		board = userInputMove(board, userInput, playerLetter);
 		showBoard(board);
-		if (isWinner(board))
+		if (isWinner(board, playerLetter)) {
 			System.out.println("player is the winner");
+			return;
+		}
+		if (computerPlay(board, computerLetter)) {
+			System.out.println("computer is the winner");
+			return;
+		}
 		if (toCheckForTie(board))
 			System.out.println("its a tie");
 		else
