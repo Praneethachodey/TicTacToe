@@ -51,7 +51,6 @@ public class TicTacToeGame {
 			position = userInput.nextInt();
 		}
 		board[position] = playerLetter;
-		userInput.close();
 		return board;
 	}
 
@@ -73,7 +72,7 @@ public class TicTacToeGame {
 
 	// to check for winner
 	public static boolean isWinner(char[] board, char symbol) {
-		for (int row = 1; row <= 6; row = row + 3) {
+		for (int row = 1; row <= 7; row = row + 3) {
 			if (board[row] == symbol && board[row] == board[row + 1] && board[row] == board[row + 2])
 				return true;
 		}
@@ -117,12 +116,10 @@ public class TicTacToeGame {
 			return false;
 		}
 		index = chooseCorner(board);
-		System.out.println("corner : " + index);
 		if (index == 0) {
 			index = centerOrSides(board);
 		}
 		board[index] = computerLetter;
-		showBoard(board);
 		return false;
 	}
 
@@ -163,6 +160,33 @@ public class TicTacToeGame {
 		return true;
 	}
 
+	// play game till end
+	public static void playGameTillEnd(char[] board, char playerLetter, char computerLetter, Scanner userInput,
+			String firstPlayer) {
+		int toss = firstPlayer.equalsIgnoreCase("computer") ? 1 : 0;
+		while (!toCheckForTie(board)) {
+			if (toss == 0) {
+				board = userInputMove(board, userInput, playerLetter);
+				showBoard(board);
+				if (isWinner(board, playerLetter)) {
+					System.out.println("player is the winner");
+					return;
+				}
+				toss = 1;
+			} else {
+				System.out.println("changing turn");
+				if (computerPlay(board, computerLetter, playerLetter)) {
+					showBoard(board);
+					System.out.println("computer is the winner");
+					return;
+				}
+				toss = 0;
+			}
+			showBoard(board);
+		}
+		System.out.println("its a tie");
+	}
+
 	public static void main(String[] args) {
 		char[] board = createBoard();
 		Scanner userInput = new Scanner(System.in);
@@ -176,22 +200,8 @@ public class TicTacToeGame {
 		showBoard(board);
 		String playFirst = tossForGameStart(userInput);
 		System.out.println(playFirst + " plays first");
-		board = userInputMove(board, userInput, playerLetter);
-		showBoard(board);
-		if (isWinner(board, playerLetter)) {
-			System.out.println("player is the winner");
-			return;
-		}
-		if (computerPlay(board, computerLetter, playerLetter)) {
-			System.out.println("computer is the winner");
-			return;
-		}
-		if (toCheckForTie(board))
-			System.out.println("its a tie");
-		else
-			System.out.println("changing turn");
+		playGameTillEnd(board, playerLetter, computerLetter, userInput, playFirst);
 		userInput.close();
-
 	}
 
 }
