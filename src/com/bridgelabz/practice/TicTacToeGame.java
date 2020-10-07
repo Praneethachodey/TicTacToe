@@ -167,7 +167,6 @@ public class TicTacToeGame {
 		while (!toCheckForTie(board)) {
 			if (toss == 0) {
 				board = userInputMove(board, userInput, playerLetter);
-				showBoard(board);
 				if (isWinner(board, playerLetter)) {
 					System.out.println("player is the winner");
 					return;
@@ -180,28 +179,43 @@ public class TicTacToeGame {
 					System.out.println("computer is the winner");
 					return;
 				}
+				showBoard(board);
 				toss = 0;
 			}
-			showBoard(board);
-		}
+			}
 		System.out.println("its a tie");
 	}
 
 	public static void main(String[] args) {
-		char[] board = createBoard();
+		int choice = 1;
 		Scanner userInput = new Scanner(System.in);
-		char playerLetter = chooseLetter(userInput);
-		System.out.println("letter chosen by player : " + playerLetter);
-		char computerLetter;
-		if (playerLetter == 'X')
-			computerLetter = 'O';
-		else
-			computerLetter = 'X';
-		showBoard(board);
-		String playFirst = tossForGameStart(userInput);
-		System.out.println(playFirst + " plays first");
-		playGameTillEnd(board, playerLetter, computerLetter, userInput, playFirst);
-		userInput.close();
-	}
+		while (1 == 1) {
+			switch (choice) {
 
+			case 1: {
+				System.out.println("welcome to tic tac toe game");
+				char[] board = createBoard();
+				char playerLetter = chooseLetter(userInput);
+				System.out.println("letter chosen by player : " + playerLetter);
+				char computerLetter;
+				if (playerLetter == 'X')
+					computerLetter = 'O';
+				else
+					computerLetter = 'X';
+				showBoard(board);
+				String playFirst = tossForGameStart(userInput);
+				System.out.println(playFirst + " plays first");
+				playGameTillEnd(board, playerLetter, computerLetter, userInput, playFirst);
+				System.out.println("enter 1 to play another and 0 to exit");
+				choice = userInput.nextInt();
+				break;
+			}
+			case 0:
+				userInput.close();
+				System.exit(1);
+			}
+		}
+		
+
+	}
 }
