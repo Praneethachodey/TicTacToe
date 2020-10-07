@@ -88,37 +88,12 @@ public class TicTacToeGame {
 		return false;
 	}
 
-	// computer play
-	public static boolean computerPlay(char[] board, char computerLetter, char playerLetter) {
-		int index = 1;
-		for (index = 1; index <= 9; index++) {
+	// check for wining index
+	public static int winningIndex(char[] board, char letter) {
+		for (int index = 1; index <= 9; index++) {
 			if (isEmpty(board, index)) {
-				board[index] = computerLetter;
-				if (isWinner(board, computerLetter))
-					return true;
-				else
-					board[index] = ' ';
-			}
-		}
-		int blockIndex = toBlockOponent(board, playerLetter);
-		if (blockIndex == 0) {
-			index = (int) (Math.random() * 9) + 1;
-			while (!isEmpty(board, index)) {
-				index = (int) (Math.random() * 9) + 1;
-			}
-		}else index=blockIndex;
-		board[index] = computerLetter;
-		showBoard(board);
-		return false;
-	}
-
-	// computer play to block oponent
-	public static int toBlockOponent(char[] board, char playerLetter) {
-		int index = 1;
-		for (index = 1; index <= 9; index++) {
-			if (isEmpty(board, index)) {
-				board[index] = playerLetter;
-				if (isWinner(board, playerLetter)) {
+				board[index] = letter;
+				if (isWinner(board, letter)) {
 					board[index] = ' ';
 					return index;
 				}
@@ -126,6 +101,44 @@ public class TicTacToeGame {
 			}
 		}
 		return 0;
+	}
+
+	// computer play
+	public static boolean computerPlay(char[] board, char computerLetter, char playerLetter) {
+		int index = 1;
+		index = winningIndex(board, computerLetter);
+		if (index != 0) {
+			board[index] = computerLetter;
+			return true;
+		}
+		int blockIndex = toBlockOponent(board, playerLetter);
+		if (blockIndex == 0) {
+			index=chooseCorner(board);
+			while (index==0 || !isEmpty(board, index)) {
+				index = (int) (Math.random() * 9) + 1;
+			}
+		} else
+			index = blockIndex;
+		board[index] = computerLetter;
+		showBoard(board);
+		return false;
+	}
+	
+	//ability to choose one of the corners
+	public static int chooseCorner(char[] board)
+	{
+		int[] corners= {1,3,7,9};
+		for(int index=0;index<=3;index++)
+		if(isEmpty(board,corners[index]))
+			return index;
+		return 0;
+	}
+
+	// computer play to block opponent
+	public static int toBlockOponent(char[] board, char playerLetter) {
+		int index = 0;
+		index=winningIndex(board, playerLetter);
+		return index;
 	}
 
 	// to check for a tie
