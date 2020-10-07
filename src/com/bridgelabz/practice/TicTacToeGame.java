@@ -42,8 +42,8 @@ public class TicTacToeGame {
 	// uc4-ability to take user input to take a move
 	public static char[] userInputMove(char[] board, Scanner userInput, char playerLetter) {
 		System.out.println("Enter the index from 1-9 to make a move");
-		int position = Integer.parseInt(userInput.next());
-		if (position >= 10 || position <= 0) {
+		int position = userInput.nextInt();
+		while (position >= 10 || position <= 0) {
 			System.out.println("enter correct position between 1 and 9");
 			userInput = new Scanner(System.in);
 			position = userInput.nextInt();
@@ -58,6 +58,15 @@ public class TicTacToeGame {
 		return board;
 	}
 
+	//to check who plays first, computer or user
+	public static String tossForGameStart(Scanner userInput) {
+		System.out.println("choose 0 for heads or 1 fo tails");
+		int userSelection=userInput.nextInt();
+		int toss=(int)((Math.random()*10)%2);
+		if(toss==userSelection)return "player";
+		else return "computer";
+	}
+	
 	public static void main(String[] args) {
 		char[] board = createBoard();
 		Scanner userInput = new Scanner(System.in);
@@ -69,6 +78,9 @@ public class TicTacToeGame {
 		else
 			computerLetter = 'X';
 		showBoard(board);
+		userInput = new Scanner(System.in);
+		String playFirst = tossForGameStart(userInput);
+		System.out.println(playFirst +" plays first");
 		userInput = new Scanner(System.in);
 		board = userInputMove(board, userInput, playerLetter);
 		showBoard(board);
