@@ -134,14 +134,11 @@ public class TicTacToeGame {
 
 	// ability to choose center or sides
 	public static int centerOrSides(char[] board) {
-		if (isEmpty(board, 5))
-			return 5;
-		int[] sides = { 2, 4, 6, 8 };
-		for (int index = 0; index <= 3; index++)
+		int[] sides = { 5, 2, 4, 6, 8 };
+		for (int index = 0; index <= 4; index++)
 			if (isEmpty(board, sides[index]))
 				return index;
 		return 0;
-
 	}
 
 	// computer play to block opponent
@@ -182,40 +179,27 @@ public class TicTacToeGame {
 				showBoard(board);
 				toss = 0;
 			}
-			}
+		}
 		System.out.println("its a tie");
 	}
 
 	public static void main(String[] args) {
 		int choice = 1;
 		Scanner userInput = new Scanner(System.in);
-		while (1 == 1) {
-			switch (choice) {
-
-			case 1: {
-				System.out.println("welcome to tic tac toe game");
-				char[] board = createBoard();
-				char playerLetter = chooseLetter(userInput);
-				System.out.println("letter chosen by player : " + playerLetter);
-				char computerLetter;
-				if (playerLetter == 'X')
-					computerLetter = 'O';
-				else
-					computerLetter = 'X';
-				showBoard(board);
-				String playFirst = tossForGameStart(userInput);
-				System.out.println(playFirst + " plays first");
-				playGameTillEnd(board, playerLetter, computerLetter, userInput, playFirst);
-				System.out.println("enter 1 to play another and 0 to exit");
-				choice = userInput.nextInt();
-				break;
-			}
-			case 0:
-				userInput.close();
-				System.exit(1);
-			}
+		while (choice == 1) {
+			System.out.println("welcome to tic tac toe game");
+			char[] board = createBoard();
+			char playerLetter = chooseLetter(userInput);
+			System.out.println("letter chosen by player : " + playerLetter);
+			char computerLetter = playerLetter == 'X' ? 'O' : 'X';
+			showBoard(board);
+			String playFirst = tossForGameStart(userInput);
+			System.out.println(playFirst + " plays first");
+			playGameTillEnd(board, playerLetter, computerLetter, userInput, playFirst);
+			System.out.println("enter 1 to play another");
+			choice = userInput.nextInt();
 		}
-		
 
 	}
+
 }
