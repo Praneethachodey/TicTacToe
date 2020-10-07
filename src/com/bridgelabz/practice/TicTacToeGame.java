@@ -24,13 +24,30 @@ public class TicTacToeGame {
 			letter = scan.next();
 		}
 		scan.close();
-		return letter.charAt(0);
+		return letter.toUpperCase().charAt(0);
+	}
+	
+	
+	//uc3-show-board
+	public static void showBoard(char[] board)
+	{
+		for(int rowJump=0;rowJump<=6;rowJump=rowJump+3) {
+		for(int column=1;column<=3;column++)
+			System.out.print(board[rowJump+column]+ " ");
+		System.out.println();
+		}
 	}
 
 	public static void main(String[] args) {
 		char[] board = createBoard();
-		char letter = chooseLetter();
-		System.out.println("letter chosen by player : " +letter);
+		char playerLetter = chooseLetter();
+		System.out.println("letter chosen by player : " +playerLetter);
+		char computerLetter;
+		if(playerLetter=='X')
+			computerLetter='O';
+		else
+			computerLetter='X';	
+		showBoard(board);
 	}
 
 }
