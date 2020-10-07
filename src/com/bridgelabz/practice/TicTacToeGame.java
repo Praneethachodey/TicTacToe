@@ -26,27 +26,29 @@ public class TicTacToeGame {
 		scan.close();
 		return letter.toUpperCase().charAt(0);
 	}
-	
-	
-	//uc3-show-board
-	public static void showBoard(char[] board)
-	{
-		for(int rowJump=0;rowJump<=6;rowJump=rowJump+3) {
-		for(int column=1;column<=3;column++)
-			System.out.print(board[rowJump+column]+ " ");
-		System.out.println();
+
+	// uc3-show-board
+	public static void showBoard(char[] board) {
+		for (int rowJump = 0; rowJump <= 6; rowJump = rowJump + 3) {
+			for (int column = 1; column <= 3; column++) {
+				System.out.print(board[rowJump + column]);
+				if (column < 3)
+					System.out.print("|");
+			}
+			if (rowJump < 6)
+				System.out.println("\n-----");
 		}
 	}
 
 	public static void main(String[] args) {
 		char[] board = createBoard();
 		char playerLetter = chooseLetter();
-		System.out.println("letter chosen by player : " +playerLetter);
+		System.out.println("letter chosen by player : " + playerLetter);
 		char computerLetter;
-		if(playerLetter=='X')
-			computerLetter='O';
+		if (playerLetter == 'X')
+			computerLetter = 'O';
 		else
-			computerLetter='X';	
+			computerLetter = 'X';
 		showBoard(board);
 	}
 
