@@ -18,7 +18,7 @@ public class TicTacToeGame {
 		System.out.println("choose X or O");
 		String letter = scan.next();
 		while (!letter.equalsIgnoreCase("x") && !letter.equalsIgnoreCase("o")) {
-			System.out.println("please enter correct letter");
+			System.out.println("please enter correct letter : x or o");
 			scan = new Scanner(System.in);
 			letter = scan.next();
 		}
@@ -43,11 +43,15 @@ public class TicTacToeGame {
 	public static char[] userInputMove(char[] board, Scanner userInput, char playerLetter) {
 		System.out.println("Enter the index from 1-9 to make a move");
 		int position = Integer.parseInt(userInput.next());
-		while(board[position]!=' ')
-		{
+		if (position >= 10 || position <= 0) {
+			System.out.println("enter correct position between 1 and 9");
+			userInput = new Scanner(System.in);
+			position = userInput.nextInt();
+		}
+		while (board[position] != ' ') {
 			System.out.println("the position is already occupied");
-			userInput=new Scanner(System.in);
-			position=userInput.nextInt();
+			userInput = new Scanner(System.in);
+			position = userInput.nextInt();
 		}
 		board[position] = playerLetter;
 		userInput.close();
