@@ -3,7 +3,7 @@ package com.bridgelabz.practice;
 import java.util.Scanner;
 
 public class TicTacToeGame {
-		
+
 	// uc1-creating board and returning it
 	public static char[] createBoard() {
 		char[] board = new char[10];
@@ -15,6 +15,7 @@ public class TicTacToeGame {
 
 	// uc2-ability to choose a letter for the player
 	public static char chooseLetter(Scanner scan) {
+		System.out.println("choose X or O");
 		String letter = scan.next();
 		while (!letter.equalsIgnoreCase("x") && !letter.equalsIgnoreCase("o")) {
 			System.out.println("please enter correct letter");
@@ -39,8 +40,15 @@ public class TicTacToeGame {
 	}
 
 	// uc4-ability to take user input to take a move
-	public static char[] userInputMove(char[] board,Scanner userInput ,char playerLetter) {
+	public static char[] userInputMove(char[] board, Scanner userInput, char playerLetter) {
+		System.out.println("Enter the index from 1-9 to make a move");
 		int position = Integer.parseInt(userInput.next());
+		while(board[position]!=' ')
+		{
+			System.out.println("the position is already occupied");
+			userInput=new Scanner(System.in);
+			position=userInput.nextInt();
+		}
 		board[position] = playerLetter;
 		userInput.close();
 		return board;
@@ -48,7 +56,6 @@ public class TicTacToeGame {
 
 	public static void main(String[] args) {
 		char[] board = createBoard();
-		System.out.println("choose X or O");
 		Scanner userInput = new Scanner(System.in);
 		char playerLetter = chooseLetter(userInput);
 		System.out.println("letter chosen by player : " + playerLetter);
@@ -58,9 +65,8 @@ public class TicTacToeGame {
 		else
 			computerLetter = 'X';
 		showBoard(board);
-		System.out.println("Enter the index from 1-9 to make a move");
-		userInput=new Scanner(System.in);
-		board = userInputMove(board,userInput,playerLetter);
+		userInput = new Scanner(System.in);
+		board = userInputMove(board, userInput, playerLetter);
 		showBoard(board);
 		userInput.close();
 
