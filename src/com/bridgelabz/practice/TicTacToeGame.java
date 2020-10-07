@@ -19,7 +19,6 @@ public class TicTacToeGame {
 		String letter = scan.next();
 		while (!letter.equalsIgnoreCase("x") && !letter.equalsIgnoreCase("o")) {
 			System.out.println("please enter correct letter : x or o");
-			scan = new Scanner(System.in);
 			letter = scan.next();
 		}
 		return letter.toUpperCase().charAt(0);
@@ -45,12 +44,10 @@ public class TicTacToeGame {
 		int position = userInput.nextInt();
 		while (position >= 10 || position <= 0) {
 			System.out.println("enter correct position between 1 and 9");
-			userInput = new Scanner(System.in);
 			position = userInput.nextInt();
 		}
 		while (board[position] != ' ') {
 			System.out.println("the position is already occupied");
-			userInput = new Scanner(System.in);
 			position = userInput.nextInt();
 		}
 		board[position] = playerLetter;
@@ -58,15 +55,44 @@ public class TicTacToeGame {
 		return board;
 	}
 
-	//to check who plays first, computer or user
+	// to check who plays first, computer or user
 	public static String tossForGameStart(Scanner userInput) {
 		System.out.println("choose 0 for heads or 1 fo tails");
-		int userSelection=userInput.nextInt();
-		int toss=(int)((Math.random()*10)%2);
-		if(toss==userSelection)return "player";
-		else return "computer";
+		int userSelection = userInput.nextInt();
+		int toss = (int) (Math.floor(Math.random() * 10) % 2);
+		if (toss == userSelection)
+			return "player";
+		else
+			return "computer";
 	}
-	
+
+	// to check for winner
+	public static boolean isWinner(char[] board) {
+		for (int row = 1; row <= 6; row = row + 3) {
+			if (board[row] != ' ' && board[row] == board[row + 1] && board[row] == board[row + 2])
+				return true;
+		}
+		for (int column = 1; column <= 3; column++) {
+			if (board[column] != ' ' && board[column] == board[column + 3] && board[column] == board[column + 6])
+				return true;
+		}
+
+		if (board[1] != ' ' && board[1] == board[5] && board[1] == board[9])
+			return true;
+		if (board[3] != ' ' && board[3] == board[5] && board[3] == board[7])
+			return true;
+		return false;
+	}
+
+	// to check for a tie
+	public static boolean toCheckForTie(char[] board) {
+		for (char entry : board) {
+			if (entry == ' ')
+				return false;
+		}
+		return true;
+	}
+
 	public static void main(String[] args) {
 		char[] board = createBoard();
 		Scanner userInput = new Scanner(System.in);
@@ -78,12 +104,16 @@ public class TicTacToeGame {
 		else
 			computerLetter = 'X';
 		showBoard(board);
-		userInput = new Scanner(System.in);
 		String playFirst = tossForGameStart(userInput);
-		System.out.println(playFirst +" plays first");
-		userInput = new Scanner(System.in);
+		System.out.println(playFirst + " plays first");
 		board = userInputMove(board, userInput, playerLetter);
 		showBoard(board);
+		if (isWinner(board))
+			System.out.println("player is the winner");
+		if (toCheckForTie(board))
+			System.out.println("its a tie");
+		else
+			System.out.println("changing turn");
 		userInput.close();
 
 	}
